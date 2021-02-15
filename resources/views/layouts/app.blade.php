@@ -77,6 +77,9 @@
 
         <main class="py-4">
             @yield('content')
+            @yield('create')
+            @yield('edit')
+            @yield('body')
         </main>
     </div>
 </body>
