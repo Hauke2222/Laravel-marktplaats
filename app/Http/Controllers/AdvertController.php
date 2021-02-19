@@ -16,7 +16,7 @@ class AdvertController extends Controller
     public function index()
     {
         //
-        return view('adverts.index');
+        return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->get()]);
     }
 
     /**
