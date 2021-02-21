@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Advert;
 use App\Models\Category;
+use App\Http\Requests\StoreAdvert;
 
 class AdvertController extends Controller
 {
@@ -36,9 +37,18 @@ class AdvertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAdvert $request)
     {
         //
+        dd($validated);
+        $validated = $request->validated();
+        $validated['premium_advert'] = $request->has('premium_advert');
+        if ($validated['image'] = $request->has('image')){
+            $validated['image'] = $request->file('image')->store('public/images');
+        }
+        Advert::create($validated);
+
+        //return redirect()->route('adverts.index');
     }
 
     /**

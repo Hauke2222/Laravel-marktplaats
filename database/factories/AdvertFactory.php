@@ -25,10 +25,10 @@ class AdvertFactory extends Factory
      */
     public function definition()
     {
-/*         $contents = file_get_contents('https://source.unsplash.com/1600x900/?nature,forrest?'.rand(0,999));
+        $contents = file_get_contents('https://source.unsplash.com/1600x900/?nature,forrest?'.rand(0,999));
         $randomNumber = time();
         $path = 'public/images/file_'.$randomNumber.'.jpg';
-        Storage::put($path, $contents); */
+        Storage::put($path, $contents); 
 
         return [
             'title' => 'Advert title',
@@ -38,7 +38,7 @@ class AdvertFactory extends Factory
             'advert_description' => Str::random(75),
             'premium_advert' => false,
             'user_id' => \App\Models\User::all()->random()->id,
-            'image' => 'path',
+            'image' => $path,
             //
         ];
     }

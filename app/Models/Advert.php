@@ -18,6 +18,7 @@ class Advert extends Model
     protected $fillable = [
         'title',
         'date',
+        'zip_code',
         'author',
         'advert_description',
         'premium_advert',

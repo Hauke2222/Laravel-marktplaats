@@ -33,7 +33,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                    <li><a href="{{ route('adverts.create') }}">create</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('adverts.create') }}">Maak een advertentie</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Lopende advertenties</a></li>
 
                     </ul>
 
