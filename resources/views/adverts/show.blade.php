@@ -1,0 +1,25 @@
+@extends ('layouts.app')
+
+@section ('body')
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<div class="container">
+    <h1>{{ $advert->title }}</h1>
+    <h2>{{ $advert->date }}</h2>
+    <h4>Author: {{ $advert->author }}</h4>
+    <h4>Postcode: {{ $advert->zip_code}}</h4>
+    <img src="{{Storage::url($advert->image)}}" class="img-fluid">
+    <p>Bescrijving: {{ $advert->advert_description }}</p>
+</div>
+
+
+@endsection ('body')

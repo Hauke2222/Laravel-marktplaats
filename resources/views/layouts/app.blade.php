@@ -34,7 +34,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ route('adverts.create') }}">Maak een advertentie</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Lopende advertenties</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('advertisers.index') }}">Lopende advertenties</a></li>
 
                     </ul>
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Advert;
 use App\Models\Category;
 use App\Http\Requests\StoreAdvert;
+use Auth;
 
 class AdvertController extends Controller
 {
@@ -28,7 +29,7 @@ class AdvertController extends Controller
     public function create()
     {
         //
-        return view('adverts.create');
+        return view('adverts.create', ['advertCategoriesFromDatabase' => Category::all()]);
     }
 
     /**
@@ -40,15 +41,14 @@ class AdvertController extends Controller
     public function store(StoreAdvert $request)
     {
         //
-        dd($validated);
         $validated = $request->validated();
         $validated['premium_advert'] = $request->has('premium_advert');
         if ($validated['image'] = $request->has('image')){
             $validated['image'] = $request->file('image')->store('public/images');
         }
-        Advert::create($validated);
+        Advert::create($validated)->categories()->sync($request->categories);
 
-        //return redirect()->route('adverts.index');
+        return redirect()->route('adverts.index');
     }
 
     /**
@@ -57,10 +57,10 @@ class AdvertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Advert $advert)
     {
         //
-        return view('adverts.show');
+        return view('adverts.show', ['advert' => $advert]);
     }
 
     /**
@@ -69,10 +69,10 @@ class AdvertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Advert $advert)
     {
         //
-        return view('adverts.edit');
+        return view('adverts.edit',  ['advert' => $advert, 'advertCategoriesFromDatabase' => Category::all(), 'selectedCategories' => $advert->categories]);
     }
 
     /**
@@ -82,9 +82,18 @@ class AdvertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreAdvert $request, Advert $advert)
     {
         //
+        $validated = $request->validated();
+        $validated['premium_advert'] = $request->has('premium_advert');
+        if ($validated['image'] = $request->has('image')){
+            $validated['image'] = $request->file('image')->store('public/images');
+        }
+        $advert->update($validated);
+        $advert->categories()->sync($request->categories);
+
+        return redirect()->route('adverts.index');
     }
 
     /**
@@ -93,8 +102,10 @@ class AdvertController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Advert $advert)
     {
         //
+        $advert->delete();
+        return redirect()->route('adverts.index');
     }
 }

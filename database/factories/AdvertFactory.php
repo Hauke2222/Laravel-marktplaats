@@ -28,13 +28,13 @@ class AdvertFactory extends Factory
         $contents = file_get_contents('https://source.unsplash.com/1600x900/?nature,forrest?'.rand(0,999));
         $randomNumber = time();
         $path = 'public/images/file_'.$randomNumber.'.jpg';
-        Storage::put($path, $contents); 
+        Storage::put($path, $contents);
 
         return [
             'title' => 'Advert title',
             'date' => '2020-08-04',
             'author' => 'Auteur',
-            'zip_code' => 'Poscode 0000XX',
+            'zip_code' => '0000XX',
             'advert_description' => Str::random(75),
             'premium_advert' => false,
             'user_id' => \App\Models\User::all()->random()->id,

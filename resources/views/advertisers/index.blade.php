@@ -16,6 +16,12 @@
       <h6 class="card-text">Categorie:<?php foreach( $advert->categories as $category){echo ' ' . $category->name . ', ';} ?></h6>
         <p class="card-text"><?php echo $advert->zip_code; ?></p>
         <a href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
+        <a href="{{ route('adverts.edit', $advert->id) }}" class="card-link">Bewerk advertentie</a>
+        <a class="card-link"><form method="post" action="{{ route('adverts.destroy', $advert->id) }}" >
+                @method('DELETE')
+                @csrf
+                <button type="submit">Verwijder advertentie</button>
+            </form></a>
       </div>
     </div>
   </div>

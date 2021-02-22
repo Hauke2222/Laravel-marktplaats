@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdvertController;
+use App\Http\Controllers\BidController;
+use App\Http\Controllers\AdvertiserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,8 @@ use App\Http\Controllers\AdvertController;
 Route::redirect('/', '/adverts');
 
 Route::resource('adverts', AdvertController::class);
+
+Route::resource('advertisers', AdvertiserController::class);
 
 Route::resource('bids', BidController::class);
 
