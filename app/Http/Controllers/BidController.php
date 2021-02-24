@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Advert;
+use Auth;
 
 class BidController extends Controller
 {
@@ -14,6 +16,7 @@ class BidController extends Controller
     public function index()
     {
         //
+        return view('bids.index');
     }
 
     /**
@@ -24,6 +27,7 @@ class BidController extends Controller
     public function create()
     {
         //
+        return view('bids.create');
     }
 
     /**
@@ -57,6 +61,7 @@ class BidController extends Controller
     public function edit($id)
     {
         //
+        return view('bids.edit');
     }
 
     /**
