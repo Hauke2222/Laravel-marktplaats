@@ -72,7 +72,12 @@ class AdvertController extends Controller
     public function edit(Advert $advert)
     {
         //
-        return view('adverts.edit',  ['advert' => $advert, 'advertCategoriesFromDatabase' => Category::all(), 'selectedCategories' => $advert->categories]);
+        return view('adverts.edit',
+        [
+            'advert' => $advert,
+            'advertCategoriesFromDatabase' => Category::all(),
+            'selectedCategories' => $advert->categories
+        ]);
     }
 
     /**

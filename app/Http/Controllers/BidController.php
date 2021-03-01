@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Advert;
+use App\Http\Requests\StoreBid;
 use Auth;
 
 class BidController extends Controller
@@ -24,10 +25,10 @@ class BidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Advert $advert)
     {
         //
-        return view('bids.create');
+        return view('bids.create', ['advert' => $advert]);
     }
 
     /**
