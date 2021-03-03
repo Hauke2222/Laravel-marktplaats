@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Advert;
+use App\Models\Bid;
 use App\Http\Requests\StoreBid;
+use App\Http\Requests\StoreAdvert;
 use Auth;
 
 class BidController extends Controller
@@ -28,6 +30,7 @@ class BidController extends Controller
     public function create(Advert $advert)
     {
         //
+        //dd($advert);
         return view('bids.create', ['advert' => $advert]);
     }
 
@@ -37,9 +40,13 @@ class BidController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBid $request)
     {
         //
+        $validated = $request->validated();
+        Bid::create($validated);
+
+        return redirect()->route('adverts.index');
     }
 
     /**

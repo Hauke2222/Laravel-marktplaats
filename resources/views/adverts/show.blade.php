@@ -2,6 +2,8 @@
 
 @section ('body')
 
+advertid: {{$advert->id}}
+<?php dd($advert)?>
 
 <div class="container">
     <h1>{{ $advert->title }}</h1>
