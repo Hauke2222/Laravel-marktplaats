@@ -27,10 +27,11 @@ class BidController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Advert $advert)
+    public function create(Request $request)
     {
         //
         //dd($advert);
+        dd($request->get('advert_id'));
         return view('bids.create', ['advert' => $advert]);
     }
 
