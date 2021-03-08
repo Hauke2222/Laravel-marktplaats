@@ -30,9 +30,12 @@ class BidController extends Controller
     public function create(Request $request)
     {
         //
-        //dd($advert);
-        dd($request->get('advert_id'));
-        return view('bids.create', ['advert' => $advert]);
+        return view('bids.create',
+        [
+            'advert_id' => $request->get('advert_id'),
+            'bidsFromDatabase' => Bid::orderBy('created_at', 'desc')->get(),
+
+        ]);
     }
 
     /**
