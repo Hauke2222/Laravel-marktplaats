@@ -19,10 +19,14 @@ Route::redirect('/', '/adverts');
 
 Route::resource('adverts', AdvertController::class);
 
-Route::resource('advertisers', AdvertiserController::class);
+Route::resource('advertisers', AdvertiserController::class)->middleware('role:advertiser');
 
 Route::resource('bids', BidController::class);
 
 Auth::routes();
+
+Route::resource('adverts', AdvertController::class)->only([
+    'create', 'store', 'update', 'destroy'
+    ])->middleware('role:advertiser');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
