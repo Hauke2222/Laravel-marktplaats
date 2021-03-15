@@ -2,16 +2,13 @@
 
 @section ('body')
 
-advertid: {{$advert->id}}
-<?php dd($advert)?>
-
 <div class="container">
-    <h1>{{ $advert->title }}</h1>
-    <h2>{{ $advert->date }}</h2>
-    <h4>Author: {{ $advert->author }}</h4>
-    <h4>Postcode: {{ $advert->zip_code}}</h4>
-    <img src="{{Storage::url($advert->image)}}" class="img-fluid">
+    <h1>{{ $advert->title }}</h1><p>Datum: {{ $advert->date }}</p>
+    <p>Author: {{ $advert->author }}</p>
+    <p>Postcode: {{ $advert->zip_code}}</p>
     <p>Bescrijving: {{ $advert->advert_description }}</p>
+    <img src="{{Storage::url($advert->image)}}" class="img-fluid">
+
 </div>
 
 

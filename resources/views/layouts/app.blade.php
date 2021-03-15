@@ -33,9 +33,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                    @auth
+                    @hasanyrole('advertiser|admin')
                     <li class="nav-item"><a class="nav-link" href="{{ route('adverts.create') }}">Maak een advertentie</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('advertisers.index') }}">Lopende advertenties</a></li>
-
+                    @endhasanyrole('advertiser|admin')
+                    @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
