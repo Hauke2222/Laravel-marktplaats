@@ -24,6 +24,7 @@ class CreateZipCodesTable extends Migration
             $table->double('latitude');
             $table->double('longitude');
             $table->string('soort');
+            $table->timestamps();
 
         });
     }
