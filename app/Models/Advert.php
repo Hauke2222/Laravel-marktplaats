@@ -14,6 +14,11 @@ class Advert extends Model
         return $this->belongsToMany('App\Models\Category', 'advert_categories', 'advert_id', 'category_id');
     }
 
+    public function zipCode()
+    {
+        return $this->belongsTo('App\Models\ZipCode');
+    }
+
     protected $table = 'adverts';
     protected $fillable = [
         'title',

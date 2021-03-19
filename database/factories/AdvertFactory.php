@@ -34,7 +34,7 @@ class AdvertFactory extends Factory
             'title' => 'Advert title',
             'date' => '2020-08-04',
             'author' => 'Auteur',
-            'zip_code' => '0000XX',
+            'zip_code' => \App\Models\ZipCode::all()->random()->postcode,
             'advert_description' => Str::random(75),
             'premium_advert' => false,
             'user_id' => \App\Models\User::all()->random()->id,

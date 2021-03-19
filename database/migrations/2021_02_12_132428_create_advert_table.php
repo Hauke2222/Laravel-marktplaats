@@ -24,6 +24,8 @@ class CreateAdvertTable extends Migration
             $table->bigInteger('user_id')->unsigned()->default('1');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('image')->nullable();
+            $table->bigInteger('zip_code_id')->unsigned();
+            $table->foreign('zip_code_id')->references('id')->on('zip_codes');
             $table->timestamps();
         });
     }

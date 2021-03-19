@@ -3,12 +3,31 @@
 @section ('body')
 <br><br>
 <div class="container">
+
+    <div class="input-group">
+    <input type="text" placeholder="Zoek" class="form-control">
+    <input type="text" placeholder="Uw Postcode" class="form-control">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Afstand</button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">5km</a>
+        <a class="dropdown-item" href="#">10km</a>
+        <a class="dropdown-item" href="#">15km</a>
+        <a class="dropdown-item" href="#">20km</a>
+        <a class="dropdown-item" href="#">25km</a>
+        <a class="dropdown-item" href="#">50km</a>
+        </div>
+    </div>
+    </div>
+
+    <br><br>
+
     <ul id="cardList">
     <br>
     <div class="row row-cols-1 row-cols-md-2">
     <?php foreach($advertsFromDatabase as $advert) { ?>
     <div class="col mb-4">
-    <div class="card" style="width: 28rem;">
+    <div class="card" style="width: 25rem;">
       <img src="{{Storage::url($advert->image)}}" class="card-img-top" alt="...">
       <div class="card-body">
       <h5 class="card-title"><?php echo $advert->title; ?></h5>
