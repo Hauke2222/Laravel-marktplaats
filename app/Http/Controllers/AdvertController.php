@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Advert;
 use App\Models\Category;
+use App\Models\ZipCode;
 use App\Http\Requests\StoreAdvert;
 use Auth;
 
@@ -47,6 +48,7 @@ class AdvertController extends Controller
             $validated['image'] = $request->file('image')->store('public/images');
         }
         Advert::create($validated)->categories()->sync($request->categories);
+        //todo met where zip_code id vinden en syncen
 
         return redirect()->route('adverts.index');
     }

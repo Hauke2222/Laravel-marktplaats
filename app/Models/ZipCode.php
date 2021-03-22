@@ -11,7 +11,7 @@ class ZipCode extends Model
 
     public function advert()
     {
-        return $this->belongsToMany('App\Models\Advert');
+        return $this->belongsToMany('App\Models\Advert', 'advert_zip_codes', 'advert_id', 'zip_code_id');
     }
 
     protected $table = 'zip_codes';
