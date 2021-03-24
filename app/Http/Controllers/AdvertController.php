@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ZipCode;
 use App\Http\Requests\StoreAdvert;
 use Auth;
+use DB;
 
 class AdvertController extends Controller
 {
@@ -47,8 +48,12 @@ class AdvertController extends Controller
         if ($validated['image'] = $request->has('image')){
             $validated['image'] = $request->file('image')->store('public/images');
         }
-        Advert::create($validated)->categories()->sync($request->categories);
-        //todo met where zip_code id vinden en syncen
+        $zipCodeFromInput = $request->zip_code;
+        $zipCodeFromInput = substr($zipCodeFromInput, 0, -2);
+        $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCodeFromInput)->first();
+        $zipCodeFromDatabaseId = $zipCodeFromDatabase->id;
+        //Advert::create($validated)->categories()->sync($request->categories);
+        Advert::create($validated)->zipCode()->save($zipCodeFromDatabaseId);
 
         return redirect()->route('adverts.index');
     }
