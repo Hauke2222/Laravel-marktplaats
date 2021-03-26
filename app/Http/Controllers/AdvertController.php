@@ -53,7 +53,10 @@ class AdvertController extends Controller
         $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCodeFromInput)->first();
         $zipCodeFromDatabaseId = $zipCodeFromDatabase->id;
         //Advert::create($validated)->categories()->sync($request->categories);
-        Advert::create($validated)->zipCode()->save($zipCodeFromDatabaseId);
+        $advert = Advert::create($validated);
+        $advert->zipCode()->associate($zipCodeFromDatabaseId);
+        //dd($advert);
+        $advert->save();
 
         return redirect()->route('adverts.index');
     }
