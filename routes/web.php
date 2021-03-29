@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\AdvertiserController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ZipCodeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +24,10 @@ Route::resource('adverts', AdvertController::class);
 Route::resource('advertisers', AdvertiserController::class)->middleware('role:advertiser');
 
 Route::resource('bids', BidController::class);
+
+Route::post('/search', SearchController::class);
+
+Route::get('/range', ZipCodeController::class);
 
 Auth::routes();
 

@@ -3,83 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ZipCode;
 
 class ZipCodeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function __invoke(Request $request)
     {
-        //
-    }
+        // ITITIAL POINT
+        $cordinates = array('latitude' => $zipCode->latitude, 'longitude' => $zipCode->longitude);
+        //RADIUS
+        $radius = 0;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        DB::table('zip_codes')
+            ->select(DB::raw(
+        SELECT id, (
+           3959 * acos (
+           cos ( radians(78.3232) )
+           * cos( radians( lat ) )
+           * cos( radians( lng ) - radians(65.3234) )
+           + sin ( radians(78.3232) )
+           * sin( radians( lat ) )
+           )
+       ) AS distance
+       FROM markers
+       HAVING distance < 30
+       ORDER BY distance)->get()
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

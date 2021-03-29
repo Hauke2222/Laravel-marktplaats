@@ -5,8 +5,11 @@
 <div class="container">
 
     <div class="input-group">
+    <form class="" action="/search" method="GET" role="search">
+    @csrf
     <input type="text" placeholder="Zoek" class="form-control">
     <input type="text" placeholder="Uw Postcode" class="form-control">
+
     <div class="input-group-append">
         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Afstand</button>
         <div class="dropdown-menu">
@@ -18,6 +21,9 @@
         <a class="dropdown-item" href="#">50km</a>
         </div>
     </div>
+    <button class="btn btn-secondary" type="submit">Zoek</button>
+    </form>
+
     </div>
 
     <br><br>
