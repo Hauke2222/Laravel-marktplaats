@@ -20,7 +20,9 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         //
-        if($request->has('zip')) {
+        //dd($request->has('zip'));
+        if($request->has('zip') && strlen($request->get('zip') > 0)) {
+            dd('test');
         // todo: breid query uit met WHERE? om te filteren op GPS locatie
         $query = "SELECT * FROM adverts a
         JOIN zip_codes z
