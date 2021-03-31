@@ -8,18 +8,17 @@
     <form class="" action="/search" method="GET" role="search">
     @csrf
     <input type="text" placeholder="Zoek" class="form-control">
-    <input type="text" placeholder="Uw Postcode" class="form-control">
+    <input type="text" id="zip" placeholder="Uw Postcode" class="form-control">
 
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Afstand</button>
-        <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">5km</a>
-        <a class="dropdown-item" href="#">10km</a>
-        <a class="dropdown-item" href="#">15km</a>
-        <a class="dropdown-item" href="#">20km</a>
-        <a class="dropdown-item" href="#">25km</a>
-        <a class="dropdown-item" href="#">50km</a>
-        </div>
+        <select class="custom-select">
+            <option value="5">5km</a>
+            <option value="10">10km</a>
+            <option value="15">15km</a>
+            <option value="20">20km</a>
+            <option value="25">25km</a>
+            <option value="50">50km</a>
+        </select>
     </div>
     <button class="btn btn-secondary" type="submit">Zoek</button>
     </form>
@@ -40,8 +39,8 @@
       <h6 class="card-subtitle mb-2 text-muted"><?php echo $advert->author . ', ' . $advert->date ; ?></h6>
       <h6 class="card-text">Categorie:<?php foreach( $advert->categories as $category){echo ' ' . $category->name . ', ';} ?></h6>
         <p class="card-text"><?php echo $advert->zip_code; ?></p>
-        <a href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
-        <a href="{{ route('bids.create', ['advert_id'=>$advert->id]) }}" class="card-link">Bied op product</a>
+        <option href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
+        <option href="{{ route('bids.create', ['advert_id'=>$advert->id]) }}" class="card-link">Bied op product</a>
       </div>
     </div>
   </div>

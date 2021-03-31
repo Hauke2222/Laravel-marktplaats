@@ -17,9 +17,31 @@ class AdvertController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if($request->has('zip')) {
+        // todo: breid query uit met WHERE? om te filteren op GPS locatie
+        $query = "SELECT * FROM adverts a
+        JOIN zip_codes z
+        ON a.zip_code_id = z.id
+
+        SET a = POW( SIN( RADIANS( lat2 - lat1 )/2 ), 2 ) + COS( RADIANS( lat1 ) ) * COS( RADIANS( lat2 ) ) * POW( SIN( RADIANS( lon2 - lon1 ) / 2 ), 2 );
+        SET c = 2 * ATAN2( SQRT( a ), SQRT( 1 - a ) );
+        SET dist = r * c;
+
+        WHERE dist < selectedRange
+
+
+        ";
+        $result = DB::raw($query);
+
+        $ads = Advert::fromQuery($result, []);
+
+        return view('adverts.index');
+
+            } else
+
         return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->get()]);
     }
 
