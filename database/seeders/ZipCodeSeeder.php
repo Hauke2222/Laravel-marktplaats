@@ -17,7 +17,7 @@ class ZipCodeSeeder extends Seeder
         //
         function seedZipCodes() {
 
-            include('database\seeders\zip_code.php');
+            include('database/seeders/zip_code.php');
 
             foreach($zipCodes as $zipCode) {
                 ZipCode::create([

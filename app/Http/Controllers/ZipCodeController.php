@@ -19,20 +19,33 @@ class ZipCodeController extends Controller
         //RADIUS
         $radius = 0;
 
-        DB::table('zip_codes')
-            ->select(DB::raw(
-        SELECT id, (
-           3959 * acos (
-           cos ( radians(78.3232) )
-           * cos( radians( lat ) )
-           * cos( radians( lng ) - radians(65.3234) )
-           + sin ( radians(78.3232) )
-           * sin( radians( lat ) )
-           )
-       ) AS distance
-       FROM markers
-       HAVING distance < 30
-       ORDER BY distance)->get()
+    //     DB::table('zip_codes')
+    //         ->select(DB::raw(
+    //     SELECT id, (
+    //        3959 * acos (
+    //        cos ( radians(78.3232) )
+    //        * cos( radians( lat ) )
+    //        * cos( radians( lng ) - radians(65.3234) )
+    //        + sin ( radians(78.3232) )
+    //        * sin( radians( lat ) )
+    //        )
+    //    ) AS distance
+    //    FROM markers
+    //    HAVING distance < 30
+    //    ORDER BY distance)->get()
+
+        // todo: breid query uit met WHERE? om te filteren op GPS locatie
+
+        $query = "SELECT * FROM adverts a
+            JOIN zip_codes z
+            ON a.zip_code_id = z.id
+
+        ";
+
+        $result = DB::raw($query);
+
+        $ads = Advert::fromQuery($result, []);
+
 
 
     }
