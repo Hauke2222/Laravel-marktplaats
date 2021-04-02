@@ -25,7 +25,7 @@ Route::resource('advertisers', AdvertiserController::class)->middleware('role:ad
 
 Route::resource('bids', BidController::class);
 
-Route::post('/search', SearchController::class);
+Route::get('/search', [AdvertController::class, 'search']);
 
 Route::get('/range', ZipCodeController::class);
 

@@ -5,13 +5,13 @@
 <div class="container">
 
     <div class="input-group">
-    <form class="" action="/adverts" method="GET" role="search">
+    <form class="" action="/search" method="GET" role="search">
     @csrf
-    <input type="text" placeholder="Zoek" class="form-control">
+    <input type="text" name="searchQuery" placeholder="Zoek" class="form-control">
     <input type="text" name="zip" placeholder="Uw Postcode" class="form-control">
 
     <div class="input-group-append">
-        <select name="distance" class="custom-select">
+        <select name="selectedDistance" class="custom-select">
             <option value="5">5km</a>
             <option value="10">10km</a>
             <option value="15">15km</a>

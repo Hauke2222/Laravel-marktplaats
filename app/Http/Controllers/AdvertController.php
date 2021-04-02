@@ -7,6 +7,7 @@ use App\Models\Advert;
 use App\Models\Category;
 use App\Models\ZipCode;
 use App\Http\Requests\StoreAdvert;
+use Spatie\Searchable\Search;
 use Auth;
 use DB;
 
@@ -22,7 +23,7 @@ class AdvertController extends Controller
         //
         //dd($request->has('zip'));
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
-            dd('test');
+
         // todo: breid query uit met WHERE? om te filteren op GPS locatie
         $query = "SELECT * FROM adverts a
         JOIN zip_codes z
@@ -32,7 +33,7 @@ class AdvertController extends Controller
         SET c = 2 * ATAN2( SQRT( a ), SQRT( 1 - a ) );
         SET dist = r * c;
 
-        WHERE dist < selectedRange
+        WHERE dist < $request->selectedDistance
 
 
         ";
@@ -40,11 +41,30 @@ class AdvertController extends Controller
 
         $ads = Advert::fromQuery($result, []);
 
-        return view('adverts.index');
+        return view('adverts.index', ['advertsFromDatabase' => $ads]);
 
             } else
 
         return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->get()]);
+    }
+    /**
+     * Search in adverts and cate.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search( Request $request)
+    {
+        //dd('test1111');
+        $searchterm = $request->input('searchQuery');
+
+        $searchResults = (new Search())
+                    ->registerModel(\App\Models\Advert::class, 'title')
+                    //->registerModel(\App\Models\Category::class, 'name')
+                    ->perform($searchterm);
+
+        dd($searchResults);
+
+        return view('adverts.index', compact('searchResults', 'searchterm'));
     }
 
     /**

@@ -4,11 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Advert extends Model
+class Advert extends Model implements Searchable
 {
     use HasFactory;
 
+    public function getSearchResult(): SearchResult
+    {
+       $url = route('', $this->slug);
+
+        return new \Spatie\Searchable\SearchResult(
+           $this,
+           $this->title,
+           $url
+        );
+    }
     public function categories()
     {
         return $this->belongsToMany('App\Models\Category', 'advert_categories', 'advert_id', 'category_id');
