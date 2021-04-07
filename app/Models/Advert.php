@@ -13,7 +13,7 @@ class Advert extends Model implements Searchable
 
     public function getSearchResult(): SearchResult
     {
-       $url = route('', $this->slug);
+       $url = route('adverts.index', $this->slug);
 
         return new \Spatie\Searchable\SearchResult(
            $this,

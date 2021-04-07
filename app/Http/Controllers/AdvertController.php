@@ -52,15 +52,15 @@ class AdvertController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search( Request $request)
+    public function search(Request $request)
     {
         //dd('test1111');
         $searchterm = $request->input('searchQuery');
-
+        //dd($searchterm);
         $searchResults = (new Search())
-                    ->registerModel(\App\Models\Advert::class, 'title')
+                    ->registerModel(Advert::class, 'title')
                     //->registerModel(\App\Models\Category::class, 'name')
-                    ->perform($searchterm);
+                    ->search($searchterm);
 
         dd($searchResults);
 
@@ -88,6 +88,7 @@ class AdvertController extends Controller
     {
         //
         $validated = $request->validated();
+        //dd($validated);
         $validated['premium_advert'] = $request->has('premium_advert');
         if ($validated['image'] = $request->has('image')){
             $validated['image'] = $request->file('image')->store('public/images');
@@ -96,10 +97,9 @@ class AdvertController extends Controller
         $zipCodeFromInput = substr($zipCodeFromInput, 0, -2);
         $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCodeFromInput)->first();
         $zipCodeFromDatabaseId = $zipCodeFromDatabase->id;
-        //Advert::create($validated)->categories()->sync($request->categories);
-        $advert = Advert::create($validated);
+        $advert = Advert::create($validated)->categories()->sync($request->categories);
         $advert->zipCode()->associate($zipCodeFromDatabaseId);
-        //dd($advert);
+        dd($advert);
         $advert->save();
 
         return redirect()->route('adverts.index');

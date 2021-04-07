@@ -19,13 +19,12 @@ use App\Http\Controllers\ZipCodeController;
 
 Route::redirect('/', '/adverts');
 
+Route::get('/search', [AdvertController::class, 'search']);
 Route::resource('adverts', AdvertController::class);
 
 Route::resource('advertisers', AdvertiserController::class)->middleware('role:advertiser');
 
 Route::resource('bids', BidController::class);
-
-Route::get('/search', [AdvertController::class, 'search']);
 
 Route::get('/range', ZipCodeController::class);
 
