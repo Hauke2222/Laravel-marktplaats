@@ -23,25 +23,7 @@ class AdvertController extends Controller
         //
         //dd($request->has('zip'));
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
-
-        // todo: breid query uit met WHERE? om te filteren op GPS locatie
-        $query = "SELECT * FROM adverts a
-        JOIN zip_codes z
-        ON a.zip_code_id = z.id
-
-        SET a = POW( SIN( RADIANS( lat2 - lat1 )/2 ), 2 ) + COS( RADIANS( lat1 ) ) * COS( RADIANS( lat2 ) ) * POW( SIN( RADIANS( lon2 - lon1 ) / 2 ), 2 );
-        SET c = 2 * ATAN2( SQRT( a ), SQRT( 1 - a ) );
-        SET dist = r * c;
-
-        WHERE dist < $request->selectedDistance
-
-
-        ";
-        $result = DB::raw($query);
-
-        $ads = Advert::fromQuery($result, []);
-
-        return view('adverts.index', ['advertsFromDatabase' => $ads]);
+            search();
 
             } else
 
@@ -54,17 +36,30 @@ class AdvertController extends Controller
      */
     public function search(Request $request)
     {
-        //dd('test1111');
+        // todo: breid query uit met WHERE? om te filteren op GPS locatie
+        $zipCode = $request->zip;
+        $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
+        $lat1 = $zipCodeFromDatabase->latitude;
+        $lon1 = $zipCodeFromDatabase->longitude;
+        $query = "SELECT * FROM adverts a
+        JOIN zip_codes z
+        ON a.zip_code_id = z.id
+        WHERE 6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance
+        ";
+        $result = DB::raw($query);
+        $ads = Advert::fromQuery($result, []);
+
         $searchterm = $request->input('searchQuery');
-        //dd($searchterm);
         $searchResults = (new Search())
                     ->registerModel(Advert::class, 'title')
                     //->registerModel(\App\Models\Category::class, 'name')
                     ->search($searchterm);
 
-        dd($searchResults);
+        $mergedColletions = $searchResults->merge($ads);
+        dd($mergedColletions);
 
-        return view('adverts.index', compact('searchResults', 'searchterm'));
+        //return view('adverts.search', compact('searchResults', 'searchterm'));
+        return view('adverts.index', ['advertsFromDatabase' => $ads]);
     }
 
     /**
@@ -97,9 +92,10 @@ class AdvertController extends Controller
         $zipCodeFromInput = substr($zipCodeFromInput, 0, -2);
         $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCodeFromInput)->first();
         $zipCodeFromDatabaseId = $zipCodeFromDatabase->id;
-        $advert = Advert::create($validated)->categories()->sync($request->categories);
+        unset($validated['zip_code']);
+        $advert = Advert::create($validated);
+        $advert->categories()->sync($request->categories);
         $advert->zipCode()->associate($zipCodeFromDatabaseId);
-        dd($advert);
         $advert->save();
 
         return redirect()->route('adverts.index');
