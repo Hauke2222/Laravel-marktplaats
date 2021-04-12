@@ -27,7 +27,7 @@ class AdvertController extends Controller
 
             } else
 
-        return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->get()]);
+        return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->paginate(4)]);
     }
     /**
      * Search in adverts and cate.
@@ -36,7 +36,6 @@ class AdvertController extends Controller
      */
     public function search(Request $request)
     {
-        // todo: breid query uit met WHERE? om te filteren op GPS locatie
         $zipCode = $request->zip;
         $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
         $lat1 = $zipCodeFromDatabase->latitude;
@@ -59,7 +58,7 @@ class AdvertController extends Controller
         dd($mergedColletions);
 
         //return view('adverts.search', compact('searchResults', 'searchterm'));
-        return view('adverts.index', ['advertsFromDatabase' => $ads]);
+        return view('adverts.index', ['advertsFromDatabase' => $mergedColletions]);
     }
 
     /**

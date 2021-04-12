@@ -1,31 +1,39 @@
 @extends ('layouts.app')
 
 @section ('body')
-<br><br>
+<br>
 <div class="container">
 
     <div class="input-group">
-    <form class="" action="/search" method="GET" role="search">
+    <form class="form-row mx-auto" action="/search" method="GET" role="search">
     @csrf
-    <input type="text" name="searchQuery" placeholder="Zoek" class="form-control">
-    <input type="text" name="zip" placeholder="Uw Postcode" class="form-control">
+    <div class="col">
+        <input type="text" name="searchQuery" placeholder="Zoek term" class="form-control">
+    </div>
+    <div class="col">
+        <input type="text" name="zip" placeholder="Uw Postcode" class="form-control">
+    </div>
 
-    <div class="input-group-append">
-        <select name="selectedDistance" class="custom-select">
-            <option value="5">5km</a>
-            <option value="10">10km</a>
-            <option value="15">15km</a>
-            <option value="20">20km</a>
-            <option value="25">25km</a>
-            <option value="50">50km</a>
-        </select>
+    <div class="col">
+        <div class="input-group-append">
+            <select name="selectedDistance" class="custom-select">
+                <option value="5">5km</a>
+                <option value="10">10km</a>
+                <option value="15">15km</a>
+                <option value="20">20km</a>
+                <option value="25">25km</a>
+                <option value="50">50km</a>
+                <option value="50">100km</a>
+                <option value="50">250km</a>
+            </select>
+        </div>
     </div>
     <button class="btn btn-secondary" type="submit">Zoek</button>
     </form>
 
     </div>
 
-    <br><br>
+    <br>
 
     <ul id="cardList">
     <br>
@@ -39,13 +47,14 @@
       <h6 class="card-subtitle mb-2 text-muted"><?php echo $advert->author . ', ' . $advert->date ; ?></h6>
       <h6 class="card-text">Categorie:<?php foreach( $advert->categories as $category){echo ' ' . $category->name . ', ';} ?></h6>
         <p class="card-text"><?php echo $advert->zip_code; ?></p>
-        <option href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
-        <option href="{{ route('bids.create', ['advert_id'=>$advert->id]) }}" class="card-link">Bied op product</a>
+        <a href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
+        <a href="{{ route('bids.create', ['advert_id'=>$advert->id]) }}" class="card-link">Bied op product</a>
       </div>
     </div>
   </div>
   <?php } ?>
     </div>
     </ul>
+    <p>{{ $advertsFromDatabase->links() }}</p>
 </div>
 @endsection ('body')
