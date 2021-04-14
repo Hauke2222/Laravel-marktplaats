@@ -55,6 +55,6 @@
   <?php } ?>
     </div>
     </ul>
-    <p>{{ $advertsFromDatabase->links() }}</p>
+    <!-- <p>{{ $advertsFromDatabase->links() }}</p> -->
 </div>
 @endsection ('body')

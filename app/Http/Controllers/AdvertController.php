@@ -20,45 +20,31 @@ class AdvertController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        //dd($request->has('zip'));
-        if($request->has('zip') && strlen($request->get('zip') > 0)) {
-            search();
+        $subQueries = [];
+            ($request->has('zip') && strlen($request->get('zip') > 0)) ? $subQueries[] = "6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance" : false;
+            ($request->has('searchQuery')&& strlen($request->get('searchQuery') > 0)) ?  $subQueries[] = "'title' = " . $request->input('searchQuery') : false;
+            //dd($subQueries);
+            if($request->has('zip') && strlen($request->get('zip') > 0))
+             {
+                $zipCode = $request->zip;
+                $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
+                $lat1 = $zipCodeFromDatabase->latitude;
+                $lon1 = $zipCodeFromDatabase->longitude;
+             }
+            $query = "SELECT * FROM adverts a";
+            if(count($subQueries) > 0) {
+                $query .= "JOIN zip_codes z
+                ON a.zip_code_id = z.id
+                WHERE " . implode("AND ", $subQueries);
+            }
+            //dd($query);
+            $result = DB::raw($query);
 
-            } else
+            $ads = Advert::fromQuery($result, []);
 
-        return view('adverts.index', ['advertsFromDatabase' => Advert::orderBy('date', 'desc')->paginate(4)]);
-    }
-    /**
-     * Search in adverts and cate.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $zipCode = $request->zip;
-        $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
-        $lat1 = $zipCodeFromDatabase->latitude;
-        $lon1 = $zipCodeFromDatabase->longitude;
-        $query = "SELECT * FROM adverts a
-        JOIN zip_codes z
-        ON a.zip_code_id = z.id
-        WHERE 6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance
-        ";
-        $result = DB::raw($query);
-        $ads = Advert::fromQuery($result, []);
 
-        $searchterm = $request->input('searchQuery');
-        $searchResults = (new Search())
-                    ->registerModel(Advert::class, 'title')
-                    //->registerModel(\App\Models\Category::class, 'name')
-                    ->search($searchterm);
 
-        $mergedColletions = $searchResults->merge($ads);
-        dd($mergedColletions);
-
-        //return view('adverts.search', compact('searchResults', 'searchterm'));
-        return view('adverts.index', ['advertsFromDatabase' => $mergedColletions]);
+        return view('adverts.index', ['advertsFromDatabase' => $ads]);
     }
 
     /**
