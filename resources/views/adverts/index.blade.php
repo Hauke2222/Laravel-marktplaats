@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="input-group">
-    <form class="form-row mx-auto" action="/search" method="GET" role="search">
+    <form class="form-row mx-auto" action="{{ route('adverts.index')}}" method="GET" role="search">
     @csrf
     <div class="col">
         <input type="text" name="searchQuery" placeholder="Zoek term" class="form-control">
@@ -55,6 +55,5 @@
   <?php } ?>
     </div>
     </ul>
-    <!-- <p>{{ $advertsFromDatabase->links() }}</p> -->
 </div>
 @endsection ('body')

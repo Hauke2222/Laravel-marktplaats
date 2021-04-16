@@ -7,7 +7,6 @@ use App\Models\Advert;
 use App\Models\Category;
 use App\Models\ZipCode;
 use App\Http\Requests\StoreAdvert;
-use Spatie\Searchable\Search;
 use Auth;
 use DB;
 
@@ -21,26 +20,30 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         $subQueries = [];
-            ($request->has('zip') && strlen($request->get('zip') > 0)) ? $subQueries[] = "6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance" : false;
-            ($request->has('searchQuery')&& strlen($request->get('searchQuery') > 0)) ?  $subQueries[] = "'title' = " . $request->input('searchQuery') : false;
-            //dd($subQueries);
-            if($request->has('zip') && strlen($request->get('zip') > 0))
-             {
-                $zipCode = $request->zip;
-                $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
-                $lat1 = $zipCodeFromDatabase->latitude;
-                $lon1 = $zipCodeFromDatabase->longitude;
-             }
-            $query = "SELECT * FROM adverts a";
-            if(count($subQueries) > 0) {
-                $query .= "JOIN zip_codes z
-                ON a.zip_code_id = z.id
-                WHERE " . implode("AND ", $subQueries);
-            }
-            //dd($query);
-            $result = DB::raw($query);
+        //echo (strlen($request->get('searchQuery')) > 0);
+        //exit();
+        //dd(strlen($request->get('searchQuery')) > 0);
+        //dd(($request->has('searchQuery')&& strlen($request->get('searchQuery') > 0)));
 
-            $ads = Advert::fromQuery($result, []);
+        if($request->has('zip') && strlen($request->get('zip') > 0)) {
+            $zipCode = $request->zip;
+            $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
+            $lat1 = $zipCodeFromDatabase->latitude;
+            $lon1 = $zipCodeFromDatabase->longitude;
+            $subQueries[] = "6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance";
+        }
+        ($request->has('searchQuery')&& strlen($request->get('searchQuery')) > 0) ?  $subQueries[] = "title = '" . $request->input('searchQuery') ."'" : false;
+
+        $query = "SELECT * FROM adverts a";
+        if(count($subQueries) > 0) {
+            $query .= " JOIN zip_codes z
+            ON a.zip_code_id = z.id
+            WHERE " . implode(" AND ", $subQueries);
+        }
+        //dd($query);
+        $result = DB::raw($query);
+
+        $ads = Advert::fromQuery($result, []);
 
 
 
