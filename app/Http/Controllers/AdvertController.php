@@ -7,6 +7,7 @@ use App\Models\Advert;
 use App\Models\Category;
 use App\Models\ZipCode;
 use App\Http\Requests\StoreAdvert;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Auth;
 use DB;
 
@@ -20,10 +21,6 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         $subQueries = [];
-        //echo (strlen($request->get('searchQuery')) > 0);
-        //exit();
-        //dd(strlen($request->get('searchQuery')) > 0);
-        //dd(($request->has('searchQuery')&& strlen($request->get('searchQuery') > 0)));
 
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
             $zipCode = $request->zip;
@@ -45,9 +42,19 @@ class AdvertController extends Controller
 
         $ads = Advert::fromQuery($result, []);
 
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 4;
 
+        $paginate = new \Illuminate\Pagination\LengthAwarePaginator(
+            $ads->forPage($page, $perPage),
+            $ads->count(),
+            $perPage,
+            $page,
+            ['path' => url('adverts')]
 
-        return view('adverts.index', ['advertsFromDatabase' => $ads]);
+        );
+
+        return view('adverts.index', ['advertsFromDatabase' => $paginate]);
     }
 
     /**
@@ -71,7 +78,6 @@ class AdvertController extends Controller
     {
         //
         $validated = $request->validated();
-        //dd($validated);
         $validated['premium_advert'] = $request->has('premium_advert');
         if ($validated['image'] = $request->has('image')){
             $validated['image'] = $request->file('image')->store('public/images');

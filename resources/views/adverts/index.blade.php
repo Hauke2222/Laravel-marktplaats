@@ -48,12 +48,15 @@
       <h6 class="card-text">Categorie:<?php foreach( $advert->categories as $category){echo ' ' . $category->name . ', ';} ?></h6>
         <p class="card-text"><?php echo $advert->zip_code; ?></p>
         <a href="{{ route('adverts.show', $advert->id) }}" class="card-link">Bekijk product</a>
+        @auth
         <a href="{{ route('bids.create', ['advert_id'=>$advert->id]) }}" class="card-link">Bied op product</a>
+        @endauth
       </div>
     </div>
   </div>
   <?php } ?>
     </div>
     </ul>
+    {{ $advertsFromDatabase->links() }}
 </div>
 @endsection ('body')
