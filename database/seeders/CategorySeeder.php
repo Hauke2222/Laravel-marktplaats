@@ -15,26 +15,21 @@ class CategorySeeder extends Seeder
     public function run()
     {
         //
-        Category::create([
-            'name' => 'Meubels'
-         ]);
-         Category::create([
-             'name' => 'Sport'
-          ]);
-         Category::create([
-             'name' => 'Gereedschap'
-          ]);
-         Category::create([
-             'name' => 'Boeken'
-          ]);
-         Category::create([
-             'name' => 'Technologie'
-          ]);
-         Category::create([
-             'name' => 'Cultuur'
-          ]);
-          Category::create([
-            'name' => 'Overig'
-         ]);
+         function createCategories() {
+            $categories = array(
+                'Meubels',
+                'Sport',
+                'Gereedschap',
+                'Boeken',
+                'Technologie',
+                'Cultuur',
+                'Overig'
+             );
+
+             foreach($categories as $category) {
+                Category::create(['name' => $category]);
+             }
+         }
+         createCategories();
     }
 }
