@@ -16,6 +16,16 @@
 
     <div class="col">
         <div class="input-group-append">
+            <select name="selectedCategory" class="custom-select">
+            <?php foreach($categoriesFromDatabase as $category) { ?>
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            <?php } ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="input-group-append">
             <select name="selectedDistance" class="custom-select">
                 <option value="5">5km</a>
                 <option value="10">10km</a>

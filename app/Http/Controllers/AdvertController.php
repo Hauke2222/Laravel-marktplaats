@@ -21,6 +21,7 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         $subQueries = [];
+        //dd($request->get('selectedCategory'));
 
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
             $zipCode = $request->zip;
@@ -31,10 +32,14 @@ class AdvertController extends Controller
         }
         ($request->has('searchQuery')&& strlen($request->get('searchQuery')) > 0) ?  $subQueries[] = "title = '" . $request->input('searchQuery') ."'" : false;
 
+        ($request->has('selectedCategory')&& strlen($request->get('selectedCategory')) > 0) ?  $subQueries[] = "ac.category_id = '" . $request->input('selectedCategory') ."'" : false;
+
         $query = "SELECT * FROM adverts a";
         if(count($subQueries) > 0) {
             $query .= " JOIN zip_codes z
             ON a.zip_code_id = z.id
+            JOIN advert_categories ac
+            ON ac.advert_id = a.id
             WHERE " . implode(" AND ", $subQueries);
         }
         //dd($query);
@@ -54,7 +59,10 @@ class AdvertController extends Controller
 
         );
 
-        return view('adverts.index', ['advertsFromDatabase' => $paginate]);
+        return view('adverts.index', [
+            'advertsFromDatabase' => $paginate,
+            'categoriesFromDatabase' => Category::all()
+            ]);
     }
 
     /**
@@ -139,8 +147,15 @@ class AdvertController extends Controller
         if ($validated['image'] = $request->has('image')){
             $validated['image'] = $request->file('image')->store('public/images');
         }
+        $zipCodeFromInput = $request->zip_code;
+        $zipCodeFromInput = substr($zipCodeFromInput, 0, -2);
+        $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCodeFromInput)->first();
+        $zipCodeFromDatabaseId = $zipCodeFromDatabase->id;
+        unset($validated['zip_code']);
         $advert->update($validated);
         $advert->categories()->sync($request->categories);
+        $advert->zipCode()->associate($zipCodeFromDatabaseId);
+        $advert->save();
 
         return redirect()->route('adverts.index');
     }

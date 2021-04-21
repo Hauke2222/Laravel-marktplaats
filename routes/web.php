@@ -26,8 +26,6 @@ Route::resource('advertisers', AdvertiserController::class)->middleware('role:ad
 
 Route::resource('bids', BidController::class);
 
-Route::get('/range', ZipCodeController::class);
-
 Auth::routes();
 
 Route::resource('adverts', AdvertController::class)->only([
