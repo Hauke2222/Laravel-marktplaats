@@ -34,7 +34,7 @@ class AdvertController extends Controller
 
         ($request->has('selectedCategory')&& strlen($request->get('selectedCategory')) > 0) ?  $subQueries[] = "ac.category_id = '" . $request->input('selectedCategory') ."'" : false;
 
-        $query = "SELECT * FROM adverts a";
+        $query = "SELECT *, a.id as id FROM adverts a";
         if(count($subQueries) > 0) {
             $query .= " JOIN zip_codes z
             ON a.zip_code_id = z.id
@@ -58,7 +58,7 @@ class AdvertController extends Controller
             ['path' => url('adverts')]
 
         );
-
+        //dd($paginate);
         return view('adverts.index', [
             'advertsFromDatabase' => $paginate,
             'categoriesFromDatabase' => Category::all()
@@ -124,6 +124,7 @@ class AdvertController extends Controller
     public function edit(Advert $advert)
     {
         //
+        //dd($advert->advert_description);
         return view('adverts.edit',
         [
             'advert' => $advert,

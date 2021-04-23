@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ZipCodeSeeder::class,
             UserSeeder::class,
-            AdvertSeeder::class,
             CategorySeeder::class,
+            AdvertSeeder::class,
         ]);
     }
 }

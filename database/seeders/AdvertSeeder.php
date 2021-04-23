@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Advert;
+use App\Models\Category;
 
 class AdvertSeeder extends Seeder
 {
@@ -15,6 +16,10 @@ class AdvertSeeder extends Seeder
     public function run()
     {
         //
-        Advert::factory()->count(10)->create();
+        //dd(Category::inRandomOrder()->first()->id);
+        Advert::factory()->count(10)->create()->each(function ($advert) {
+            $advert->categories()->sync(Category::inRandomOrder()->first()->id);
+        });;
+
     }
 }

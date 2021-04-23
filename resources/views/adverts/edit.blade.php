@@ -2,7 +2,6 @@
 
 @section ('edit')
 
-
 <br>
 <div class="container">
     <form action="{{ route('adverts.update', $advert->id) }}" method="POST" enctype="multipart/form-data">
@@ -22,7 +21,7 @@
     </div>
     <div class="form-group">
         <label for="zip_code">Postcode</label>
-        <input class="form-control" name="zip_code" value="{{ $advert->zip_code }}">
+        <input class="form-control" name="zip_code" value="{{ $advert->zipCode->postcode }}">
     </div>
     <div class="form-group">
     <select name="categories[]" class="form-control" id="categories" multiple>
@@ -36,7 +35,7 @@
     </div>
     <div class="form-group">
         <label for="advert_description">Beschrijving</label>
-        <textarea class="form-control" name="advert_description" rows="3" value="{{ $advert->advert_description }}"></textarea>
+        <textarea class="form-control" name="advert_description" rows="3">{{ $advert->advert_description }}</textarea>
     </div>
     <div class="form-group">
         <label for="image">Foto</label>

@@ -29,7 +29,7 @@ class StoreAdvert extends FormRequest
             'date' => ['required', 'date'],
             'author' => ['required'],
             'advert_description' => ['required'],
-            'zip_code' => ['required', 'min:6', 'max:7'],
+            'zip_code' => ['required', 'min:4', 'max:6'],
             'image' => ['mimes:jpeg,bmp,png|max:2000'],
         ];
     }

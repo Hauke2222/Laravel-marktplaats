@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="input-group">
-    <form class="form-row mx-auto" action="{{ route('adverts.index')}}" method="GET" role="search">
+    <form class="form-row mx-auto" action="{{ route('adverts.index')}}" method="GET" role="search" enctype="multipart/form-data">
     @csrf
     <div class="col">
         <input type="text" name="searchQuery" placeholder="Zoek term" class="form-control">
