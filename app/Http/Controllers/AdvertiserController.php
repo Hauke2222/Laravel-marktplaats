@@ -17,8 +17,8 @@ class AdvertiserController extends Controller
     {
         //
         $user = Auth::user();
-        $user = $user->name;
-        return view('advertisers.index', ['advertsFromDatabase' => Advert::where('author', $user)->orderBy('date', 'desc')->get()]);
+        $user = $user->id;
+        return view('advertisers.index', ['advertsFromDatabase' => Advert::where('user_id', $user)->orderBy('date', 'desc')->get()]);
     }
 
     /**
