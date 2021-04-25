@@ -7,6 +7,7 @@
 <div class="container">
     <form action="{{ route('adverts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
     <div class="form-group">
         <label for="title">Advertentie Naam</label>
         <input class="form-control" name="title" placeholder="Advertentie naam">

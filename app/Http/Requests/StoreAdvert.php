@@ -25,6 +25,7 @@ class StoreAdvert extends FormRequest
     {
         return [
             //
+            'user_id' => ['required'],
             'title' => ['required', 'min:2', 'max:255'],
             'date' => ['required', 'date'],
             'author' => ['required'],
