@@ -7,6 +7,7 @@
     <form action="{{ route('adverts.update', $advert->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
+    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
     <div class="form-group">
         <label for="title">Advertentie Naam</label>
         <input class="form-control" name="title" value="{{ $advert->title }}">

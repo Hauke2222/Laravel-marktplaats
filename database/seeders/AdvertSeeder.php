@@ -16,7 +16,6 @@ class AdvertSeeder extends Seeder
     public function run()
     {
         //
-        //dd(Category::inRandomOrder()->first()->id);
         Advert::factory()->count(10)->create()->each(function ($advert) {
             $advert->categories()->sync(Category::inRandomOrder()->first()->id);
         });;

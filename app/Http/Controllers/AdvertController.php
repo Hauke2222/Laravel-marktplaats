@@ -21,7 +21,6 @@ class AdvertController extends Controller
     public function index(Request $request)
     {
         $subQueries = [];
-        //dd($request->get('selectedCategory'));
 
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
             $zipCode = $request->zip;
@@ -42,7 +41,6 @@ class AdvertController extends Controller
             ON ac.advert_id = a.id
             WHERE " . implode(" AND ", $subQueries);
         }
-        //dd($query);
         $result = DB::raw($query);
 
         $ads = Advert::fromQuery($result, []);
@@ -58,7 +56,6 @@ class AdvertController extends Controller
             ['path' => url('adverts')]
 
         );
-        //dd($paginate);
         return view('adverts.index', [
             'advertsFromDatabase' => $paginate,
             'categoriesFromDatabase' => Category::all()
@@ -124,7 +121,6 @@ class AdvertController extends Controller
     public function edit(Advert $advert)
     {
         //
-        //dd($advert->advert_description);
         return view('adverts.edit',
         [
             'advert' => $advert,

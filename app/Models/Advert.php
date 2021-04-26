@@ -11,16 +11,6 @@ class Advert extends Model implements Searchable
 {
     use HasFactory;
 
-    public function getSearchResult(): SearchResult
-    {
-       $url = route('adverts.index', $this->slug);
-
-        return new \Spatie\Searchable\SearchResult(
-           $this,
-           $this->title,
-           $url
-        );
-    }
     public function categories()
     {
         return $this->belongsToMany('App\Models\Category', 'advert_categories', 'advert_id', 'category_id');
@@ -40,5 +30,6 @@ class Advert extends Model implements Searchable
         'advert_description',
         'premium_advert',
         'image',
+        'user_id',
     ];
 }
