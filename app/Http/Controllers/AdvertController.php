@@ -25,10 +25,12 @@ class AdvertController extends Controller
         if($request->has('zip') && strlen($request->get('zip') > 0)) {
             $zipCode = $request->zip;
             $zipCodeFromDatabase= DB::table('zip_codes')->where('postcode', '=', $zipCode)->first();
-            $lat1 = $zipCodeFromDatabase->latitude;
+            $lat1 = $zipCodeFromDatabase->latitude;     // todo: bij zoeken op postcode onstaat er een error: SQLSTATE[HY000]: General error: 1 no such function: SQRT (SQL: SELECT *, a.id as id FROM adverts a JOIN zip_codes z ON a.zip_code_id = z.id JOIN advert_categories ac ON ac.advert_id = a.id WHERE 6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - 53.393408 )/2 ), 2 ) + COS( RADIANS( 53.393408 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - 6.5592591 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - 53.393408 )/2 ), 2 ) + COS( RADIANS( 53.393408 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - 6.5592591 ) / 2 ), 2 ) ) ) < 5)
             $lon1 = $zipCodeFromDatabase->longitude;
             $subQueries[] = "6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance";
         }
+
+        // todo: gebruik ...WHERE title LIKE %zoekterm% ipv title =, omdat anders de zoekterm precies gelijk moet zijn (gelijke upper / lower case)
         ($request->has('searchQuery')&& strlen($request->get('searchQuery')) > 0) ?  $subQueries[] = "title = '" . $request->input('searchQuery') ."'" : false;
 
         ($request->has('selectedCategory')&& strlen($request->get('selectedCategory')) > 0) ?  $subQueries[] = "ac.category_id = '" . $request->input('selectedCategory') ."'" : false;

@@ -31,12 +31,12 @@ class AdvertFactory extends Factory
         Storage::put($path, $contents);
 
         return [
-            'title' => 'Advert title',
+            'title' => 'Advert title',                          // todo: laat de faker willekeurige titles genereren zodat je het zoeken op title beter kunt testen
             'date' => '2020-08-04',
             'author' => 'Auteur',
-            'zip_code_id' => '11',
-            'advert_description' => Str::random(75),
-            'premium_advert' => false,
+            'zip_code_id' => '11',                              // todo: kies een random zipcode
+            'advert_description' => Str::random(75),            // todo: hier kun je een faker functie voor gebruiken om een iets realistischere description te maken
+            'premium_advert' => false,                          // todo: deze waarde kun je randomizen
             'user_id' => \App\Models\User::all()->random()->id,
             'image' => $path,
             //
