@@ -14,9 +14,6 @@ class ZipCodeSeeder extends Seeder
      */
     public function run()
     {
-        // todo: het is overbodig om in een aparte functie te wrappen
-        function seedZipCodes() {
-
             include('database/seeders/zip_code.php');
 
             foreach($zipCodes as $zipCode) {
@@ -34,7 +31,5 @@ class ZipCodeSeeder extends Seeder
                     ]);
 
              }
-         }
-         seedZipCodes();
         }
 }

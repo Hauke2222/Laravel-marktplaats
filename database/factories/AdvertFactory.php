@@ -30,12 +30,14 @@ class AdvertFactory extends Factory
         $path = 'public/images/file_'.$randomNumber.'.jpg';
         Storage::put($path, $contents);
 
+        $faker = Faker\Factory::create();
+
         return [
-            'title' => 'Advert title',                          // todo: laat de faker willekeurige titles genereren zodat je het zoeken op title beter kunt testen
+            'title' => '',                          // todo: laat de faker willekeurige titles genereren zodat je het zoeken op title beter kunt testen
             'date' => '2020-08-04',
             'author' => 'Auteur',
-            'zip_code_id' => '11',                              // todo: kies een random zipcode
-            'advert_description' => Str::random(75),            // todo: hier kun je een faker functie voor gebruiken om een iets realistischere description te maken
+            'zip_code_id' => ZipCode::inRandomOrder()->first()->id,
+            'advert_description' => $faker->text(),
             'premium_advert' => false,                          // todo: deze waarde kun je randomizen
             'user_id' => \App\Models\User::all()->random()->id,
             'image' => $path,

@@ -19,6 +19,12 @@ class Advert extends Model
         return $this->belongsTo('App\Models\ZipCode', 'zip_code_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+
     protected $table = 'adverts';
     protected $fillable = [
         'title',

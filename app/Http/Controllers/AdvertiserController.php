@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Advert;
+use App\Models\User;
 use Auth;
 
 class AdvertiserController extends Controller
@@ -17,7 +18,8 @@ class AdvertiserController extends Controller
     {
         // todo: adverts selecteren via $user->adverts? (via de relation uit het model)
         $user = Auth::user();
-        $user = $user->id;
+        //$user = $user->id;
+        dd($user->adverts);
         return view('advertisers.index', ['advertsFromDatabase' => Advert::where('user_id', $user)->orderBy('date', 'desc')->get()]);
     }
 

@@ -14,9 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-
-        // todo: het is overbodig om de code in een functie te wrappen
-         function createCategories() {
             $categories = array(
                 'Meubels',
                 'Sport',
@@ -30,7 +27,5 @@ class CategorySeeder extends Seeder
              foreach($categories as $category) {
                 Category::create(['name' => $category]);
              }
-         }
-         createCategories();
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Bid;
 use App\Http\Requests\StoreBid;
 use App\Http\Requests\StoreAdvert;
 use Auth;
+use DB;
 
 class BidController extends Controller
 {
@@ -30,11 +31,13 @@ class BidController extends Controller
     public function create(Request $request)
     {
         //
+        $advert_id = $request->get('advert_id');
         return view('bids.create',
         [
-            'advert_id' => $request->get('advert_id'),
-            'bidsFromDatabase' => Bid::orderBy('created_at', 'desc')->get(),
-
+            'advert_id' => $advert_id,
+            'bidsFromDatabase' =>  DB::table('bids')
+                ->where('advert_id', '=', $advert_id)
+                ->get(),
         ]);
     }
 
