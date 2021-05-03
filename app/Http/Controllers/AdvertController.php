@@ -30,8 +30,7 @@ class AdvertController extends Controller
                 $subQueries[] = "6371 * 2 * ATAN2( SQRT( POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ), SQRT( 1 - POW( SIN( RADIANS( z.latitude - $lat1 )/2 ), 2 ) + COS( RADIANS( $lat1 ) ) * COS( RADIANS( z.latitude ) ) * POW( SIN( RADIANS( z.longitude - $lon1 ) / 2 ), 2 ) ) ) < $request->selectedDistance";
             }
         }
-        // todo: gebruik ...WHERE title LIKE %zoekterm% ipv title =, omdat anders de zoekterm precies gelijk moet zijn (gelijke upper / lower case)
-        ($request->has('searchQuery')&& strlen($request->get('searchQuery')) > 0) ?  $subQueries[] = "title = '" . $request->input('searchQuery') ."'" : false;
+        ($request->has('searchQuery')&& strlen($request->get('searchQuery')) > 0) ?  $subQueries[] = "title LIKE '%" . $request->input('searchQuery') ."%'" : false;
 
         ($request->has('selectedCategory')&& strlen($request->get('selectedCategory')) > 0) ?  $subQueries[] = "ac.category_id = '" . $request->input('selectedCategory') ."'" : false;
 
@@ -43,6 +42,7 @@ class AdvertController extends Controller
             ON ac.advert_id = a.id
             WHERE " . implode(" AND ", $subQueries);
         }
+        //dd($query);
         $result = DB::raw($query);
 
         $ads = Advert::fromQuery($result, []);

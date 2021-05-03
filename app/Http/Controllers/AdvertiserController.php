@@ -16,11 +16,7 @@ class AdvertiserController extends Controller
      */
     public function index()
     {
-        // todo: adverts selecteren via $user->adverts? (via de relation uit het model)
-        $user = Auth::user();
-        //$user = $user->id;
-        dd($user->adverts);
-        return view('advertisers.index', ['advertsFromDatabase' => Advert::where('user_id', $user)->orderBy('date', 'desc')->get()]);
+        return view('advertisers.index', ['advertsFromDatabase' => Auth::user()->adverts]);
     }
 
     /**

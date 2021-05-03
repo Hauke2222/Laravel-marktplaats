@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\File;
+use Faker;
+use App\Models\ZipCode;
 
 class AdvertFactory extends Factory
 {
@@ -30,15 +32,15 @@ class AdvertFactory extends Factory
         $path = 'public/images/file_'.$randomNumber.'.jpg';
         Storage::put($path, $contents);
 
-        $faker = Faker\Factory::create();
+        $faker = Faker\Factory::create('nl_NL');
 
         return [
-            'title' => '',                          // todo: laat de faker willekeurige titles genereren zodat je het zoeken op title beter kunt testen
+            'title' => $faker->sentence(10),
             'date' => '2020-08-04',
             'author' => 'Auteur',
             'zip_code_id' => ZipCode::inRandomOrder()->first()->id,
             'advert_description' => $faker->text(),
-            'premium_advert' => false,                          // todo: deze waarde kun je randomizen
+            'premium_advert' => (bool)rand(0,1),
             'user_id' => \App\Models\User::all()->random()->id,
             'image' => $path,
             //
